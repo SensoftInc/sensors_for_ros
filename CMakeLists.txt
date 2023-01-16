@@ -13,10 +13,10 @@ if(NOT ANDROID_HOME)
   message(FATAL_ERROR "ANDROID_HOME must be given")
 endif()
 
-if(NOT PATH_TO_KEYSTORE)
-  set(PATH_TO_KEYSTORE "$ENV{HOME}/.android/debug.keystore")
-endif()
-message(STATUS "Given keystore ${PATH_TO_KEYSTORE}")
+#if(NOT PATH_TO_KEYSTORE)
+#  set(PATH_TO_KEYSTORE "$ENV{HOME}/.android/debug.keystore")
+#endif()
+#message(STATUS "Given keystore ${PATH_TO_KEYSTORE}")
 
 file(GLOB android_toolchain
   LIST_DIRECTORIES false
@@ -26,37 +26,37 @@ if(NOT android_toolchain)
   message(FATAL_ERROR "Failed to find android toolchain file - is ANDROID_HOME correct?")
 endif()
 
-file(GLOB android_aapt2
-  LIST_DIRECTORIES false
-  "${ANDROID_HOME}/build-tools/*/aapt2"
-  )
-if(NOT android_aapt2)
-  message(FATAL_ERROR "Failed to find aapt2 - is ANDROID_HOME correct?")
-endif()
+#file(GLOB android_aapt2
+#  LIST_DIRECTORIES false
+#  "${ANDROID_HOME}/build-tools/*/aapt2"
+#  )
+#if(NOT android_aapt2)
+#  message(FATAL_ERROR "Failed to find aapt2 - is ANDROID_HOME correct?")
+#endif()
 
-file(GLOB android_jar
-  LIST_DIRECTORIES false
-  "${ANDROID_HOME}/platforms/android-${minimum_target_sdk}/android.jar"
-  )
-if(NOT android_jar)
-  message(FATAL_ERROR "Failed to find android.jar - is ANDROID_HOME correct?")
-endif()
+#file(GLOB android_jar
+#  LIST_DIRECTORIES false
+#  "${ANDROID_HOME}/platforms/android-${minimum_target_sdk}/android.jar"
+#  )
+#if(NOT android_jar)
+#  message(FATAL_ERROR "Failed to find android.jar - is ANDROID_HOME correct?")
+#endif()
 
-file(GLOB android_zipalign
-  LIST_DIRECTORIES false
-  "${ANDROID_HOME}/build-tools/*/zipalign"
-  )
-if(NOT android_zipalign)
-  message(FATAL_ERROR "Failed to find zipalign - is ANDROID_HOME correct?")
-endif()
+#file(GLOB android_zipalign
+#  LIST_DIRECTORIES false
+#  "${ANDROID_HOME}/build-tools/*/zipalign"
+#  )
+#if(NOT android_zipalign)
+#  message(FATAL_ERROR "Failed to find zipalign - is ANDROID_HOME correct?")
+#endif()
 
-file(GLOB android_apksigner
-  LIST_DIRECTORIES false
-  "${ANDROID_HOME}/build-tools/*/apksigner"
-  )
-if(NOT android_apksigner)
-  message(FATAL_ERROR "Failed to find apksigner - is ANDROID_HOME correct?")
-endif()
+#file(GLOB android_apksigner
+#  LIST_DIRECTORIES false
+#  "${ANDROID_HOME}/build-tools/*/apksigner"
+#  )
+#if(NOT android_apksigner)
+#  message(FATAL_ERROR "Failed to find apksigner - is ANDROID_HOME correct?")
+#endif()
 
 set(ANDROID_ABI arm64-v8a)
 
