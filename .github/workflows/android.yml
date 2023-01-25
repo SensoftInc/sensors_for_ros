@@ -44,8 +44,7 @@ jobs:
            python3-flake8-quotes \
            python3-pytest-repeat \
            python3-pytest-rerunfailures \
-           python3-lark
-          cd sensors_for_ros
+           python3-lark          
           vcs import --input ros.repos deps              
           mkdir build
           cd build
