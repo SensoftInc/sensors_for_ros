@@ -1,0 +1,59 @@
+name: Build for Android
+
+on:
+  workflow_dispatch:
+
+env:
+  ANDROID_SDK_VERSION: 31
+  ANDROID_ABI: arm64-v8a
+
+jobs:
+
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+        
+      - uses: actions/cache@v3
+        id: ros2_cache
+        with:
+          path: build
+          key: ros2_deps
+
+      - name: Install ROS2 tools and dependencies
+        if: steps.ros2_cache.outputs.cache-hit != 'true'
+        run: |
+          sudo apt install software-properties-common
+          sudo add-apt-repository universe
+          sudo apt update && sudo apt install curl
+          sudo curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg
+          echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(. /etc/os-release && echo $UBUNTU_CODENAME) main" | sudo tee /etc/apt/sources.list.d/ros2.list > /dev/null
+          sudo apt update && sudo apt install -y \
+          python3-flake8-docstrings \
+          python3-pip \
+          python3-pytest-cov \
+          ros-dev-tools
+          sudo apt install -y \
+           python3-flake8-blind-except \
+           python3-flake8-builtins \
+           python3-flake8-class-newline \
+           python3-flake8-comprehensions \
+           python3-flake8-deprecated \
+           python3-flake8-import-order \
+           python3-flake8-quotes \
+           python3-pytest-repeat \
+           python3-pytest-rerunfailures \
+           python3-lark
+          cd sensors_for_ros
+          vcs import --input ros.repos deps              
+          mkdir build
+          cd build
+          cmake ../ -DANDROID_HOME=$ANDROID_HOME -DANDROID_ABI=${ANDROID_ABI} -DANDROID_PLATFORM=${ANDROID_SDK_VERSION}
+          make
+
+      - name: Upload ROS2 built dependencies
+        uses: actions/upload-artifact@v3.1.2
+        with:
+          name: ros-dependencies
+          path: build
