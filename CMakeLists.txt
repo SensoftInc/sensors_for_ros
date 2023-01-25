@@ -4,8 +4,6 @@ project(anroid_ros-superbuild)
 
 include(ExternalProject)
 
-set(minimum_target_sdk 30)
-
 if(NOT ANDROID_HOME)
   message(FATAL_ERROR "ANDROID_HOME must be given")
 endif()
@@ -58,12 +56,10 @@ endif()
 #  message(FATAL_ERROR "Failed to find apksigner - is ANDROID_HOME correct?")
 #endif()
 
-set(ANDROID_ABI arm64-v8a)
-
 set(android_cmake_args 
   -DCMAKE_TOOLCHAIN_FILE=${android_toolchain}
   -DANDROID_ABI=${ANDROID_ABI}
-  -DANDROID_PLATFORM=android-${minimum_target_sdk}
+  -DANDROID_PLATFORM=${ANDROID_PLATFORM}
   )
 
 # Make place to install Python packages we depend on
