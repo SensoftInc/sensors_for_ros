@@ -48,11 +48,13 @@ jobs:
           vcs import --input ros.repos deps              
           mkdir build
           cd build
-          cmake ../ -DANDROID_HOME=$ANDROID_HOME -DANDROID_ABI=${ANDROID_ABI} -DANDROID_PLATFORM=${ANDROID_SDK_VERSION}
+          cmake ../ -DANDROID_HOME=$ANDROID_HOME -DANDROID_ABI=${{env.ANDROID_ABI}} -DANDROID_PLATFORM=${{env.ANDROID_SDK_VERSION}}
           make
-
+          cd ..
+          tar zcf android-ros-${{env.ANDROID_SDK_VERSION}}-${{env.ANDROID_ABI}}.tar.gz ./build 
+      
       - name: Upload ROS2 built dependencies
         uses: actions/upload-artifact@v3.1.2
         with:
-          name: android-ros-${ANDROID_SDK_VERSION}-${ANDROID_ABI}
-          path: build
+          name: android-ros-${{env.ANDROID_SDK_VERSION}}-${{env.ANDROID_ABI}}
+          path: android-ros-${{env.ANDROID_SDK_VERSION}}-${{env.ANDROID_ABI}}.tar.gz
