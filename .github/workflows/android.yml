@@ -55,5 +55,5 @@ jobs:
       - name: Upload ROS2 built dependencies
         uses: actions/upload-artifact@v3.1.2
         with:
-          name: ros-dependencies
+          name: android-ros-${ANDROID_SDK_VERSION}-${ANDROID_ABI}
           path: build
