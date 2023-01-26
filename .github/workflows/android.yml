@@ -41,12 +41,12 @@ jobs:
           mkdir build
           cd build
           cmake ../ -DANDROID_HOME=$ANDROID_HOME -DANDROID_ABI=${{env.ANDROID_ABI}} -DANDROID_PLATFORM=${{env.ANDROID_SDK_VERSION}}
-          make
-          cd ..
-          tar zcf android-ros-${{env.ANDROID_SDK_VERSION}}-${{env.ANDROID_ABI}}.tar.gz ./build 
+          make DESTDIR=. install          
+          ls
+          tar zcf android-ros-${{env.ANDROID_SDK_VERSION}}-${{env.ANDROID_ABI}}.tar.gz ./usr
       
       - name: Upload ROS2 libs built with Android
         uses: actions/upload-artifact@v3.1.2
         with:
           name: android-ros-${{env.ANDROID_SDK_VERSION}}-${{env.ANDROID_ABI}}
-          path: android-ros-${{env.ANDROID_SDK_VERSION}}-${{env.ANDROID_ABI}}.tar.gz
+          path: ./build/android-ros-${{env.ANDROID_SDK_VERSION}}-${{env.ANDROID_ABI}}.tar.gz
