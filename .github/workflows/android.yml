@@ -40,10 +40,9 @@ jobs:
            python3-lark          
           mkdir build
           cd build
-          cmake ../ -DANDROID_HOME=$ANDROID_HOME -DANDROID_ABI=${{env.ANDROID_ABI}} -DANDROID_PLATFORM=${{env.ANDROID_SDK_VERSION}}
-          make DESTDIR=. install          
-          ls
-          tar zcf android-ros-${{env.ANDROID_SDK_VERSION}}-${{env.ANDROID_ABI}}.tar.gz ./usr
+          cmake .. -DANDROID_HOME=$ANDROID_HOME -DANDROID_ABI=${{env.ANDROID_ABI}} -DANDROID_PLATFORM=${{env.ANDROID_SDK_VERSION}}
+          make                     
+          tar zcf android-ros-${{env.ANDROID_SDK_VERSION}}-${{env.ANDROID_ABI}}.tar.gz ./deps/*
       
       - name: Upload ROS2 libs built with Android
         uses: actions/upload-artifact@v3.1.2
