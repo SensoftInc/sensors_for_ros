@@ -1,0 +1,38 @@
+name: Create a docker image for sensors_for_ros
+
+on: 
+  workflow_dispatch:
+
+jobs:
+  
+  docker_container:
+    
+    name: Create and publish image
+    runs-on: camis-build-p01
+    env:
+      NODE_EXTRA_CA_CERTS: /usr/local/share/ca-certificates/ZscalerRootCertificate-2048-SHA256.crt
+        
+    steps:
+      - name: Clone sensors_ros_ros
+        uses: actions/checkout@v3
+        
+      - uses: jfrog/setup-jfrog-cli@v3
+        env:
+           JF_USER: tracey
+           JF_URL: http://10.132.97.14:8082
+           JF_ACCESS_TOKEN: ${{ secrets.TRACEY_ARTIFACT_TOKEN }}
+          
+      - name: Copy ZScaler certificate to source code path
+        run: |          
+          cp /usr/local/share/ca-certificates/ZscalerRootCertificate-2048-SHA256.crt .                    
+          
+      - name: Build and Push Docker image
+        uses: mr-smithers-excellent/docker-build-push@v5
+        with:
+          image: sensors_for_ros/sensors_for_ros_build_environment
+          registry: ghcr.io
+          dockerfile: ./Dockerfile
+          tags: 1.0.${{ github.run_number }}, latest
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+          
